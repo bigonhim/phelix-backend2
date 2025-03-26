@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kazi Connector - Worker Registration</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>Worker Registration</h1>
+            <form action="{% url 'register_worker' %}" method="POST">
+                {% csrf_token %}
+            
+                <input type="text" id="username" name="username" placeholder="Username" required>
+                {% if form.username.errors %}
+                    <p class="error">{{ form.username.errors.0 }}</p>
+                {% endif %}
+            
+                <input type="email" id="email" name="email" placeholder="Email" required>
+                {% if form.email.errors %}
+                    <p class="error">{{ form.email.errors.0 }}</p>
+                {% endif %}
+            
+                <input type="password" id="password1" name="password1" placeholder="Password" required>
+                {% if form.password1.errors %}
+                    <p class="error">{{ form.password1.errors.0 }}</p>
+                {% endif %}
+            
+                <input type="password" id="password2" name="password2" placeholder="Confirm Password" required>
+                {% if form.password2.errors %}
+                    <p class="error">{{ form.password2.errors.0 }}</p>
+                {% endif %}
+            
+                <input type="text" id="full_name" name="full_name" placeholder="Full Name" required>
+                {% if form.full_name.errors %}
+                    <p class="error">{{ form.full_name.errors.0 }}</p>
+                {% endif %}
+            
+                <input type="text" id="contact_info" name="contact_info" placeholder="Contact Info" required>
+                {% if form.contact_info.errors %}
+                    <p class="error">{{ form.contact_info.errors.0 }}</p>
+                {% endif %}
+            
+                <input type="text" id="skills" name="skills" placeholder="Skills" required>
+                {% if form.skills.errors %}
+                    <p class="error">{{ form.skills.errors.0 }}</p>
+                {% endif %}
+            
+                <button type="submit">Register</button>
+            
+                <p>Already have an account? <a href="{% url 'worker_login' %}">Login</a></p>
+            </form>
+        </div>
+    </div>
+    
+</body>
+</html>

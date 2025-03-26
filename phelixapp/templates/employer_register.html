@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kazi Connector - Employer Registration</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1 style="font-size:30px; margin-bottom:1em">Employer Registration</h1>
+
+            <form action="{% url 'register_employer' %}" method="POST">
+                {% csrf_token %}
+                         
+                <input type="text" name="username" placeholder="Username" required>
+                {% if form.username.errors %}
+                    <p class="error">{{ form.username.errors.0 }}</p>
+                {% endif %}
+
+                <input type="email" name="email" placeholder="Email" required>
+                {% if form.email.errors %}
+                    <p class="error">{{ form.email.errors.0 }}</p>
+                {% endif %}
+
+                <input type="password" name="password1" placeholder="Password" required>
+                {% if form.password1.errors %}
+                    <p class="error">{{ form.password1.errors.0 }}</p>
+                {% endif %}
+
+                <input type="password" name="password2" placeholder="Confirm Password" required>
+                {% if form.password2.errors %}
+                    <p class="error">{{ form.password2.errors.0 }}</p>
+                {% endif %}
+
+                <input type="text" name="company_name" placeholder="Company Name" required>
+                {% if form.company_name.errors %}
+                    <p class="error">{{ form.company_name.errors.0 }}</p>
+                {% endif %}
+
+                <input type="text" name="contact_info" placeholder="Contact Info" required>
+                {% if form.contact_info.errors %}
+                    <p class="error">{{ form.contact_info.errors.0 }}</p>
+                {% endif %}
+
+                <button type="submit">Register</button>
+
+                <p>Already have an account? <a href="{% url 'employer_login' %}">Login</a></p>
+            </form>
+        </div>
+    </div>
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const user = {
+                username: document.getElementById('username').value,
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value,
+                company_name: document.getElementById('company_name').value,
+                contact_info: document.getElementById('contact_info').value
+            };
+
+            const response = await fetch('http://localhost:5000/api/employer/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(user)
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                alert(data.message);
+                window.location.href = 'employer_login.html'; // Redirect to login
+            } else {
+                alert(data.error);
+            }
+        });
+    </script>
+</body>
+</html>
