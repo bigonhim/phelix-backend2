@@ -18,4 +18,5 @@ urlpatterns = [
     path('employer_dashboard',views.employer_dashboard,name='employer_dasboard'),
     path('post_job',views.post_job, name='post_job'),
     path('update_user_profile',views.update_user_profile, name='update_user_profile'),
+    path('update_user_profile2',views.update_user_profile2, name='update_user_profile2'),
 ]

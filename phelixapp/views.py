@@ -8,7 +8,7 @@ from django.contrib.auth import login
 from django.contrib.auth.models import User
 from .forms import WorkerRegistrationForm, EmployerRegistrationForm
 from django.contrib.auth.decorators import login_required
-from .models import CustomUser,Job
+from .models import CustomUser,Job ,WorkerProfile
 from django.contrib import messages
 from .forms import UserUpdateForm,JobForm
 
@@ -39,8 +39,11 @@ def employer_dashboard(request):
 @login_required
 def worker_dashboard(request):
     job = Job.objects.all()
+    worker= WorkerProfile.objects.get(user=request.user)
+      # Get the worker profile for the logged-in user
     return render(request,'worker_dashboard.html',{'user': request.user,
-                                                   'jobs' : job
+                                                   'jobs' : job,
+                                                   'contact_info': worker.contact_info,
                                                    })
 
 
@@ -59,7 +62,13 @@ class CustomLoginView(LoginView):
             messages.error(self.request, "Oops that's an Employer Account!")
             return self.form_invalid(form)  
         return super().form_valid(form)  
+    
+    def form_invalid(self, form):
+        for error in form.errors.values():
+            messages.error(self.request, error)  # Display errors to the user
 
+        return super().form_invalid(form)
+    
 class CustomLoginView2(LoginView):
     template_name = 'employer_login.html'
     next_page = 'home' 
@@ -74,6 +83,12 @@ class CustomLoginView2(LoginView):
         elif user.user_type == 'employer':
             return redirect('/employer_dashboard')
         return super().form_valid(form)  
+    def form_invalid(self, form):
+
+        for error in form.errors.values():
+            messages.error(self.request, error)  
+
+        return super().form_invalid(form)
 
 def register_worker(request):
     if request.method == "POST":
@@ -134,7 +149,19 @@ def update_user_profile(request):
 
     return render(request, 'worker_dashboard.html', {'form': form})
 
+@login_required
+def update_user_profile2(request):
+    if request.method == "POST":
+        form = UserUpdateForm(request.POST, instance=request.user)  # Update the logged-in user
+        if form.is_valid():
+            form.save()
+            return redirect('employer_dasboard')  # Redirect to profile page (change as needed)
+        else:
+            print(form.errors)
+    else:
+        form = UserUpdateForm(instance=request.user)  # Prefill form with current user data
 
+    return render(request, 'employer_dashboard.html', {'form': form})
 
 
 
