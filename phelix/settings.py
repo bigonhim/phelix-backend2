@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-gidd8xf9+am6!b2!ys_vy5oc$v%bmn6uqfkeo&#57q1j^4#v8f
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['localhost','.vercel.app','.now.sh']
 
 
 # Application definition
@@ -80,8 +80,12 @@ AUTH_USER_MODEL = 'phelixapp.CustomUser'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'railway',
+        'USER': 'postgres',
+        'PASSWORD': 'vUcAglWaGVIlKKnrlKVxHXXDDhhZSPlt',
+        'HOST': 'ballast.proxy.rlwy.net',
+        'PORT': '41785',
     }
 }
 
